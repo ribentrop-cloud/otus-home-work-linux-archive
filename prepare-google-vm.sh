@@ -1,0 +1,37 @@
+sudo -s
+cd ~
+echo "
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAsmDVtjiTsDqWrn8UlYG1VPIthAzNG0WsgMwPuZRYS6zTmawq
+msr+kZwZ97K+yB8BaOxNZDwLMYeL+UXQStiDOhzhXufxQrOv1QSR6WpUE9EIU3RN
+V8Y517e6kAk/GtV0csJOyFQ9YBmx9qF6Z2Umk08GedAlkoKZIztyAAea5Uddc9vJ
+GtV27EHnJ7QNJS5f5lBAgG3GClyvUB8plsZbUwPTYcOfv/+9W5sYg05bgYg6mmkm
+QTFB/3OL6hNch5KpXU/TBOPMwlhCFKlbFMIjX4jTvutj0PDjfK9QDcTE2HFyQvwO
+A4IE5wxk+gErvgD/suxRMts05hLdd7QrE32O+wIDAQABAoIBAFW98jxK6cLWBsQN
+1ckfthgE6RgGRzkKvqaScCSWR/LoOjYt6bTKSp+XV2wXAVmUfcr/exvpOMAwFXpW
+so6nkDyI0VQbTX7wfF56eeCm+Y8k9UmYJ+0/HWKxr/24VBsD65uWBuSIiY/+Cesx
+J3M3zdkVLVm0UbshB5dF5cBZ53y5iN1Tuv31xPEB1Z0RyB38edZsqkGeKmDpty1R
+D2Rwp57FTSWT++Ezrm84ZrdEivzR3QzQwo3SWIITMumdPVAfFH7/4wpNvJe4mLNQ
+LDoTDJ2He15frDT9b66573DmNiQUtojWAQRyjwEE9ByjeO7TdvHaR9V6Yd2vRGot
+HXV7EEECgYEA6RvGVW6qte1y9ox8pv/Zy8/kvmPs+rWqr4e5fD5rErsiwqZM8WFn
+lzr0wZULcCtO555PHcXQ7jjlrBl9gf8Ws6QSMUubU0u7KQGY6VVCpmGyP2uqWEk/
+LMG2aoP1sovHagxkQp4K04S/Dzf5aiAzVQ/gOXkm8g7ryTio8xboIGsCgYEAw+Ur
+sxPnP4SlHbNsBDD2cWFXhyGWO16sgUL1aY7mqxMRpWQHpT3yHKUOPr/AY88KlO8F
+BfEWx7Ao99BS9xxqTdzU4ZikEZhgqoXRsgrq4c3HCMdXIMiULT7V3sUzLl2skAKc
+lx+MhW5tWBXdx0lI7kEx0Xtv+Ln8VUM1WWoCr7ECgYEAv9LVUPQykmcFlZFh+mLM
+LQW0rF+6YU0hWjSMFIugvNc18Yu8AV4wSqh/RNWLhhB9a+hAHrXsCjzT8t0/BLyP
+R+CZ/+rBtLe7GjFwTYKVyCjY74t/sAsGa6Q0ok5Y30ZbIQ91acR4EDtKphFfs08w
+Lq1TzLe/rq1Mpldz4CZXemUCgYBHbtgCky1uMhZrwDORS7FyIsbiFdNMjvdko2AO
+P/fJRkjXAKTxEqeo3l9VbmLfgm4fZRF12zYtVwV5aFP4nDn/bpmKMjkR2XjWdbnD
+rMt9z6XWg6o34Cx4W0Nt2ocRT0NPuEQVr4F0XpIs3rxioUyg5NEfzF1GW7ux87IO
+iuOz4QKBgQCRz6zdKkA10UDyK1tZB1KuQjgtn91tLJUgPA4J1xDSNvnfoeRT9UzH
+w5w8vcTk+2/dmxj4sqOptR2q4/vyq5yOs6yd/Z69TndfbylYmd+FSdJHFXcn3WHe
+VoqHNspq2n8hdVR94UVAwDgnjbYB/IXd5Y1udKeso+MYPKZYbXxhMg==
+-----END RSA PRIVATE KEY-----" > ~/.ssh/id_rsa
+chmod 600 ~/.ssh/id_rsa
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config_backup
+sed -i -E 's/PermitRootLogin\sno/PermitRootLogin yes/' /etc/ssh/sshd_config
+service sshd restart
+ssh localhost -oStrictHostKeyChecking=no
+if [[ $(echo $?) -eq 0 ]] ; then echo "success"; else echo "failure" ; fi
+exit
