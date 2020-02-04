@@ -12,7 +12,7 @@ determine_checkpoint()
   CHECKPOINT_LOWER=1478811700
 }
 
-make_ip_arrays()
+make_ip_array()
 {
 # read file line by line
 while IFS= read -r line; do
@@ -20,7 +20,6 @@ while IFS= read -r line; do
   # get log record time
   log_time="$(echo $line | awk '{print $4}')"
   log_time="$(echo $log_time | cut -b 2-21)"
-  # попробовать через {...1:-1q}
   log_time="$(date -d "$(echo $log_time | sed -e 's,/,-,g' -e 's,:, ,')" +"%s")"
   if [[ log_time -gt $CHECKPOINT_LOWER ]] && [[ log_time -lt $CHECKPOINT_UPPER ]]; then
     echo " ... let's get IP ..."
@@ -30,8 +29,10 @@ while IFS= read -r line; do
     ip_addr_src="$(echo $line | awk '{print $1}')"
     ip_addr_src_arr+=($ip_addr_src)
     ip_addr_src_string="${ip_addr_src_string} ${ip_addr_src}"
+    #echo $ip_addr_src_string" <-"
 
     # extract destination IP
+    # ??? переделать через SED
     ip_addr_dst="$(echo $line | sed -E 's/.+\s//')"
     ip_addr_dst_arr+=($ip_addr_dst)
   fi
@@ -39,29 +40,46 @@ while IFS= read -r line; do
 done < apache.log
 }
 
-make_csv_from_array()
+print_ip_src_array()
 {
-  SAVEIFS=$IFS
-  IFS=$'\n'
-  ip_addr_sorted_str=($1)
-  IFS=$SAVEIFS
-
-  for elem in "${ip_addr_sorted_str[@]}"
+  echo "print_ip_src_array : "
+  for each in "${ip_addr_src_arr[@]}"
   do
-    ip="$(echo "$elem" | awk '{print $2}')"
-    count="$(echo "$elem" | awk '{print $1}')"
-    echo "$ip,$count"
+    echo "$each"
   done
 }
 
+print_ip_dst_array()
+{
+  echo "print_ip_dst_array : "
+  for each in "${ip_addr_dst_arr[@]}"
+  do
+    echo "$each"
+  done
+}
+
+amake_csv_from_array()
+{
+  echo $1
+}
+
 determine_checkpoint
-make_ip_arrays
+make_ip_array
+#print_ip_src_array
+#print_ip_dst_array
+#echo  -e $ip_addr_src_string | uniq -c | sort -bgr
+# make array from 
+ip_addr_src_arr_sorted="$(echo "${ip_addr_src_arr[@]}" | tr ' ' '\n' | uniq -c  | sort -bgr)"
+#echo "${ip_addr_src_arr[@]}" | tr ' ' '\n' | uniq -c  | sort -bgr"
+echo "-- final ---"
+IFS=$'\n' read -r -a array <<< "$ip_addr_src_arr_sorted"
+echo $array
 
-echo "--- src csv ---"
-ip_addr_src_sorted_str="$(echo "${ip_addr_src_arr[@]}" | tr ' ' '\n' | uniq -c  | sort -bgr)"
-make_csv_from_array "$ip_addr_src_sorted_str"
+for each in "${array[@]}"
+  do
+    echo "$each"
+  done
 
-echo "--- dst csv ---"
-ip_addr_src_sorted_dst="$(echo "${ip_addr_dst_arr[@]}" | tr ' ' '\n' | uniq -c  | sort -bgr)"
-make_csv_from_array "$ip_addr_src_sorted_dst"
+
+#make_csv_from_array "$ip_addr_src_arr_sorted"
 
