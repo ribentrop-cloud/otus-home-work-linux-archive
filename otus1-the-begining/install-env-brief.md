@@ -13,14 +13,13 @@ chmod +x packer
 # install vagrant and configure proxy
 wget https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.rpm  
 rpm -i vagrant_2.2.7_x86_64.rpm  
-vagrant up  
-vagrant plugin install vagrant-proxyconf  
-export http_proxy="http://user:password@host:port"  
-export http_proxy="http://dtrubenkov:Coco1234@172.18.2.216:8080"  
-export https_proxy="http://dtrubenkov:Coco1234@172.18.2.216:8080"  
-vagrant plugin install vagrant-proxyconf  
-vagrant up  
 
 #Clone hw repo  
 git clone https://github.com/dmitry-lyutenko/manual_kernel_update  
 
+vagrant plugin install vagrant-proxyconf  
+export http_proxy="http://user:password@host:port"  
+export http_proxy="http://dtrubenkov:Coco1234@172.18.2.216:8080"  
+export https_proxy="http://dtrubenkov:Coco1234@172.18.2.216:8080"  
+#vagrant plugin install vagrant-proxyconf  
+vagrant up  
