@@ -1,9 +1,9 @@
 
 # install Virtual box
-sudo yum install kernel-devel kernel-headers make patch gcc
-sudo wget https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo -P /etc/yum.repos.d
-sudo yum install VirtualBox-5.2
-systemctl status vboxdrv
+sudo yum install kernel-devel kernel-headers make patch gcc  
+sudo wget https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo -P /etc/yum.repos.d  
+sudo yum install VirtualBox-5.2  
+systemctl status vboxdrv  
 
 # install packer
 curl https://releases.hashicorp.com/packer/1.5.1/packer_1.5.1_linux_amd64.zip | sudo gzip -d > /usr/local/bin/packer
