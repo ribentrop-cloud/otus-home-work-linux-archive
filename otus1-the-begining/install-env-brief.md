@@ -14,7 +14,8 @@ chmod +x packer
 wget https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.rpm  
 rpm -i vagrant_2.2.7_x86_64.rpm  
 
-#Clone hw repo  
+#Clone hw repo
+git config --global http.proxy http://dtrubenkov:Coco1234@172.18.2.216:8080/  
 git clone https://github.com/dmitry-lyutenko/manual_kernel_update  
 
 vagrant plugin install vagrant-proxyconf  
